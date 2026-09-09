@@ -24,6 +24,13 @@ body {
   font-family: var(--font-montserrat), sans-serif;
 }
 
+html.scroll-locked,
+html.scroll-locked body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  height: 100%;
+}
+
 h1,
 h2,
 h3,
@@ -102,4 +109,28 @@ video::-webkit-media-controls-start-playback-button {
 
 .animate-arrow-y {
   animation: arrow-y 1s ease-in-out infinite;
+}
+
+@keyframes heading-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-heading-in {
+  animation: heading-in 0.7s ease-out forwards;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

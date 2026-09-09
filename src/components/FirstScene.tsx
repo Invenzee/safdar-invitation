@@ -9,11 +9,14 @@ const END_FRAME_SRC = "/first-scene-end.webp";
 const PLAYBACK_RATE = 1.5;
 const END_EPSILON = 0.35;
 
-export default function FirstScene() {
+export default function FirstScene({ onUnlocked }: { onUnlocked: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasEndedRef = useRef(false);
+  const onUnlockedRef = useRef(onUnlocked);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasEnded, setHasEnded] = useState(false);
+
+  onUnlockedRef.current = onUnlocked;
 
   const setPlaybackRate = (video: HTMLVideoElement) => {
     if (video.playbackRate !== PLAYBACK_RATE) {
@@ -31,6 +34,7 @@ export default function FirstScene() {
     }
 
     setHasEnded(true);
+    onUnlockedRef.current();
   }, []);
 
   const isNearEnd = (video: HTMLVideoElement) => {
@@ -80,7 +84,7 @@ export default function FirstScene() {
 
   return (
     <section
-      className="relative h-dvh min-h-[100svh] w-full overflow-hidden bg-black"
+      className="relative h-dvh min-h-[100svh] w-full shrink-0 snap-start overflow-hidden bg-black"
       onClick={handleTap}
     >
       <img
@@ -133,11 +137,22 @@ export default function FirstScene() {
       ) : null}
 
       {hasEnded ? (
-        <div className="pointer-events-none absolute bottom-[max(3rem,calc(env(safe-area-inset-bottom)+1.5rem))] left-1/2 z-30 w-full -translate-x-1/2 transform-gpu">
-          <p className="relative mx-auto flex w-[180px] items-center justify-center gap-2 rounded-full border-2 border-heading bg-[#fff6ea]/85 px-5 py-2.5 text-center font-sans text-xs font-medium tracking-[0.28em] text-black shadow-[0_2px_12px_rgba(74,44,20,0.2)] backdrop-blur-[2px]">
+        <div className="absolute bottom-[max(3rem,calc(env(safe-area-inset-bottom)+1.5rem))] left-1/2 z-50 w-full -translate-x-1/2 transform-gpu">
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              const scene = document.getElementById("scene-2");
+              const scroller = scene?.closest("main");
+              if (scene && scroller) {
+                scroller.scrollTo({ top: scene.offsetTop, behavior: "smooth" });
+              }
+            }}
+            className="relative mx-auto flex w-[180px] items-center justify-center gap-2 rounded-full border-2 border-heading bg-[#fff6ea]/85 px-5 py-2.5 text-center font-sans text-xs font-medium tracking-[0.28em] text-black shadow-[0_2px_12px_rgba(74,44,20,0.2)] backdrop-blur-[2px]"
+          >
             Scroll Down
             <ChevronDown className="animate-arrow-y size-4 shrink-0 text-heading" strokeWidth={2.25} />
-          </p>
+          </button>
         </div>
       ) : null}
 
