@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const BODY_CLASS =
   "font-sans text-[10px] font-medium uppercase leading-relaxed tracking-[0.2em] text-black";
-const HEADING_CLASS = "font-heading leading-tight text-heading";
+const HEADING_CLASS = "font-heading leading-tight text-black";
 const TYPE_MS = 14;
 const HEADING_MS = 700;
 

@@ -9,7 +9,13 @@ const END_FRAME_SRC = "/first-scene-end.webp";
 const PLAYBACK_RATE = 1.5;
 const END_EPSILON = 0.35;
 
-export default function FirstScene({ onUnlocked }: { onUnlocked: () => void }) {
+export default function FirstScene({
+  onUnlocked,
+  onScrollToNext,
+}: {
+  onUnlocked: () => void;
+  onScrollToNext: () => void;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasEndedRef = useRef(false);
   const onUnlockedRef = useRef(onUnlocked);
@@ -127,7 +133,7 @@ export default function FirstScene({ onUnlocked }: { onUnlocked: () => void }) {
       />
 
       {hasEnded ? (
-        <div className="pointer-events-none absolute left-1/2 top-[38%] z-30 w-[34%] -translate-x-1/2 -translate-y-1/2 transform-gpu">
+        <div className="pointer-events-none absolute left-1/2 top-[39%] z-30 w-[34%] -translate-x-1/2 -translate-y-1/2 transform-gpu">
           <img
             src="/bismillah-yellow.webp"
             alt="Bismillah"
@@ -142,11 +148,7 @@ export default function FirstScene({ onUnlocked }: { onUnlocked: () => void }) {
             type="button"
             onClick={(event) => {
               event.stopPropagation();
-              const scene = document.getElementById("scene-2");
-              const scroller = scene?.closest("main");
-              if (scene && scroller) {
-                scroller.scrollTo({ top: scene.offsetTop, behavior: "smooth" });
-              }
+              onScrollToNext();
             }}
             className="relative mx-auto flex w-[180px] items-center justify-center gap-2 rounded-full border-2 border-heading bg-[#fff6ea]/85 px-5 py-2.5 text-center font-sans text-xs font-medium tracking-[0.28em] text-black shadow-[0_2px_12px_rgba(74,44,20,0.2)] backdrop-blur-[2px]"
           >

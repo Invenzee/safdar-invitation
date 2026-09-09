@@ -38,7 +38,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-tempting), cursive;
-  color: var(--heading);
+  color: #000;
 }
 
 video::-webkit-media-controls {
@@ -133,4 +133,33 @@ video::-webkit-media-controls-start-playback-button {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.invitation-scroll {
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.22);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.22);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.15s ease-in-out infinite;
+  transform-origin: center;
 }
