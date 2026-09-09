@@ -64,10 +64,23 @@ export default function Home() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.loop = true;
+    audio.muted = false;
     void audio.play().catch(() => {
-      // Autoplay can still be blocked; tap-to-open is the user gesture.
+      // Autoplay can still be blocked; the next tap/swipe retries.
     });
   }, []);
+
+  useEffect(() => {
+    const retryMusic = () => startMusic();
+    document.addEventListener("pointerdown", retryMusic);
+    document.addEventListener("touchstart", retryMusic);
+    document.addEventListener("keydown", retryMusic);
+    return () => {
+      document.removeEventListener("pointerdown", retryMusic);
+      document.removeEventListener("touchstart", retryMusic);
+      document.removeEventListener("keydown", retryMusic);
+    };
+  }, [startMusic]);
 
   const goToScene = useCallback((index: number) => {
     const scroller = scrollerRef.current;

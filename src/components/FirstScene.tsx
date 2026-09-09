@@ -91,6 +91,7 @@ export default function FirstScene({
   }, []);
 
   const handleTap = () => {
+    onOpenRef.current();
     void openInvitation();
   };
 
