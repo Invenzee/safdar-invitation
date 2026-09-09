@@ -55,9 +55,19 @@ function animateScroll(element: HTMLElement, to: number, duration: number, onDon
 export default function Home() {
   const [unlocked, setUnlocked] = useState(false);
   const scrollerRef = useRef<HTMLElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const sceneIndexRef = useRef(0);
   const animatingRef = useRef(false);
   const touchStartYRef = useRef(0);
+
+  const startMusic = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.loop = true;
+    void audio.play().catch(() => {
+      // Autoplay can still be blocked; tap-to-open is the user gesture.
+    });
+  }, []);
 
   const goToScene = useCallback((index: number) => {
     const scroller = scrollerRef.current;
@@ -151,9 +161,17 @@ export default function Home() {
         unlocked ? "overflow-y-auto" : "overflow-y-hidden"
       }`}
     >
+      <audio
+        ref={audioRef}
+        src="/bg-music.mp3"
+        loop
+        preload="auto"
+        playsInline
+      />
       <FirstScene
         onUnlocked={() => setUnlocked(true)}
         onScrollToNext={() => goToScene(1)}
+        onOpen={startMusic}
       />
       <SceneDivider visible={unlocked} />
       <SecondScene />

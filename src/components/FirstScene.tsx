@@ -12,9 +12,11 @@ const END_EPSILON = 0.35;
 export default function FirstScene({
   onUnlocked,
   onScrollToNext,
+  onOpen,
 }: {
   onUnlocked: () => void;
   onScrollToNext: () => void;
+  onOpen: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasEndedRef = useRef(false);
@@ -66,6 +68,7 @@ export default function FirstScene({
 
     video.muted = true;
     setPlaybackRate(video);
+    onOpen();
 
     try {
       await video.play();
