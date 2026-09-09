@@ -56,7 +56,7 @@ export default function FirstScene() {
         <img
           src="/bismillah-black.webp"
           alt="Bismillah"
-          className="animate-emblem-in pointer-events-none absolute left-1/2 top-[23%] z-10 w-[34%] max-w-[180px] -translate-x-1/2 -translate-y-1/2 object-contain"
+          className="animate-emblem-in pointer-events-none absolute left-1/2 top-[28%] z-10 w-[34%]"
         />
       ) : null}
 
