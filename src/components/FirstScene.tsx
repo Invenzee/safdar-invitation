@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState, type SyntheticEvent } from "r
 const VIDEO_SRC = "/first-scene.mp4";
 const POSTER_SRC = "/first-scene-poster.webp";
 const END_FRAME_SRC = "/first-scene-end.webp";
-const PLAYBACK_RATE = 1.2;
+const PLAYBACK_RATE = 1.5;
 const END_EPSILON = 0.35;
 
 export default function FirstScene() {
