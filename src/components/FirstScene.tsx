@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import { useRef, useState } from "react";
 
 const VIDEO_SRC = "/first scene video.mp4";
@@ -56,8 +57,17 @@ export default function FirstScene() {
         <img
           src="/bismillah-black.webp"
           alt="Bismillah"
-          className="animate-emblem-in pointer-events-none absolute left-1/2 top-[28%] z-10 w-[34%]"
+          className="animate-emblem-in pointer-events-none absolute left-1/2 top-[38%] z-10 w-[34%]"
         />
+      ) : null}
+
+      {hasEnded ? (
+        <div className="pointer-events-none absolute bottom-[max(3rem,calc(env(safe-area-inset-bottom)+1.5rem))] w-full left-1/2 z-10 -translate-x-1/2">
+          <p className="relative w-[180px] justify-center mx-auto flex items-center gap-2 rounded-full border-2 border-heading bg-[#fff6ea]/85 px-5 py-2.5 text-center font-sans text-xs font-medium tracking-[0.28em] text-black shadow-[0_2px_12px_rgba(74,44,20,0.2)] backdrop-blur-[2px]">
+            Scroll Down
+            <ChevronDown className="animate-arrow-y size-4 shrink-0 text-heading" strokeWidth={2.25} />
+          </p>
+        </div>
       ) : null}
 
       <div

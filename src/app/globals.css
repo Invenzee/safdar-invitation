@@ -89,3 +89,17 @@ video::-webkit-media-controls-start-playback-button {
 .animate-emblem-in {
   animation: emblem-in 0.9s ease-out forwards;
 }
+
+@keyframes arrow-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.animate-arrow-y {
+  animation: arrow-y 1s ease-in-out infinite;
+}
