@@ -1,6 +1,7 @@
 "use client";
 
 import { Heart } from "lucide-react";
+import { useAdvanceWhenVisible } from "@/hooks/useAdvanceWhenVisible";
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 const HIGHLIGHT_DAY = 11;
@@ -14,11 +15,13 @@ function octoberCells() {
   return cells;
 }
 
-export default function ThirdScene() {
+export default function ThirdScene({ onComplete }: { onComplete: () => void }) {
   const cells = octoberCells();
+  const sectionRef = useAdvanceWhenVisible(4000, onComplete);
 
   return (
     <section
+      ref={sectionRef}
       id="scene-3"
       className="relative flex h-dvh min-h-[100svh] w-full shrink-0 snap-start items-center justify-center overflow-hidden px-6"
     >

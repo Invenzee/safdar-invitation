@@ -11,7 +11,7 @@
   --color-foreground: var(--foreground);
   --color-heading: var(--heading);
   --font-sans: var(--font-montserrat);
-  --font-heading: var(--font-tempting);
+  --font-heading: var(--font-sunyshine);
 }
 
 html,
@@ -37,7 +37,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-tempting), cursive;
+  font-family: var(--font-sunyshine), cursive;
   color: #000;
 }
 

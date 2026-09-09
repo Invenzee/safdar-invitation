@@ -87,6 +87,15 @@ export default function Home() {
     });
   }, []);
 
+  const goToNextIfOn = useCallback(
+    (fromIndex: number) => {
+      if (sceneIndexRef.current === fromIndex) {
+        goToScene(fromIndex + 1);
+      }
+    },
+    [goToScene],
+  );
+
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -170,15 +179,15 @@ export default function Home() {
       />
       <FirstScene
         onUnlocked={() => setUnlocked(true)}
-        onScrollToNext={() => goToScene(1)}
+        onScrollToNext={() => goToNextIfOn(0)}
         onOpen={startMusic}
       />
       <SceneDivider visible={unlocked} />
-      <SecondScene />
+      <SecondScene onComplete={() => goToNextIfOn(1)} />
       <SceneDivider visible={unlocked} />
-      <ThirdScene />
+      <ThirdScene onComplete={() => goToNextIfOn(2)} />
       <SceneDivider visible={unlocked} />
-      <FourthScene />
+      <FourthScene onComplete={() => goToNextIfOn(3)} />
       <SceneDivider visible={unlocked} />
       <FifthScene />
     </main>

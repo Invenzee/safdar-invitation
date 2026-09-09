@@ -8,8 +8,8 @@ export const montserrat = Montserrat({
   display: "swap",
 });
 
-export const tempting = localFont({
-  src: "../../public/fonts/Tempting.otf",
-  variable: "--font-tempting",
+export const sunyshine = localFont({
+  src: "../../public/fonts/Sunyshine DEMO.ttf",
+  variable: "--font-sunyshine",
   display: "swap",
 });

@@ -2,6 +2,7 @@
 
 import { CalendarDays, Clock, MapPin, Phone, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useAdvanceWhenVisible } from "@/hooks/useAdvanceWhenVisible";
 
 function SectionLabel({
   icon: Icon,
@@ -20,9 +21,12 @@ function SectionLabel({
   );
 }
 
-export default function FourthScene() {
+export default function FourthScene({ onComplete }: { onComplete: () => void }) {
+  const sectionRef = useAdvanceWhenVisible(5000, onComplete);
+
   return (
     <section
+      ref={sectionRef}
       id="scene-4"
       className="relative flex h-dvh min-h-[100svh] w-full shrink-0 items-center justify-center overflow-hidden px-5 pt-20 pb-5"
     >

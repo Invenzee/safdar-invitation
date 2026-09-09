@@ -6,8 +6,10 @@ import { useCallback, useEffect, useRef, useState, type SyntheticEvent } from "r
 const VIDEO_SRC = "/first-scene.mp4";
 const POSTER_SRC = "/first-scene-poster.webp";
 const END_FRAME_SRC = "/first-scene-end.webp";
-const PLAYBACK_RATE = 1.5;
+const PLAYBACK_RATE = 2;
 const END_EPSILON = 0.35;
+const AUTO_OPEN_MS = 2000;
+const AUTO_SCROLL_AFTER_END_MS = 2200;
 
 export default function FirstScene({
   onUnlocked,
@@ -20,11 +22,17 @@ export default function FirstScene({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasEndedRef = useRef(false);
+  const openedRef = useRef(false);
   const onUnlockedRef = useRef(onUnlocked);
+  const onOpenRef = useRef(onOpen);
+  const onScrollToNextRef = useRef(onScrollToNext);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasEnded, setHasEnded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   onUnlockedRef.current = onUnlocked;
+  onOpenRef.current = onOpen;
+  onScrollToNextRef.current = onScrollToNext;
 
   const setPlaybackRate = (video: HTMLVideoElement) => {
     if (video.playbackRate !== PLAYBACK_RATE) {
@@ -43,6 +51,9 @@ export default function FirstScene({
 
     setHasEnded(true);
     onUnlockedRef.current();
+    window.setTimeout(() => {
+      onScrollToNextRef.current();
+    }, AUTO_SCROLL_AFTER_END_MS);
   }, []);
 
   const isNearEnd = (video: HTMLVideoElement) => {
@@ -62,21 +73,70 @@ export default function FirstScene({
     }
   };
 
-  const handleTap = async () => {
+  const openInvitation = useCallback(async () => {
     const video = videoRef.current;
-    if (!video || !video.paused || hasEndedRef.current) return;
+    if (!video || openedRef.current || hasEndedRef.current) return;
+    openedRef.current = true;
 
     video.muted = true;
     setPlaybackRate(video);
-    onOpen();
+    onOpenRef.current();
 
     try {
       await video.play();
       setIsPlaying(true);
     } catch {
-      // Ignore play() rejections from browser autoplay policies.
+      openedRef.current = false;
     }
+  }, []);
+
+  const handleTap = () => {
+    void openInvitation();
   };
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const waitUntilReady = async () => {
+      await document.fonts.ready;
+
+      if (document.readyState !== "complete") {
+        await new Promise<void>((resolve) => {
+          window.addEventListener("load", () => resolve(), { once: true });
+        });
+      }
+
+      const poster = new Image();
+      poster.src = POSTER_SRC;
+      await poster.decode().catch(() => undefined);
+
+      const video = videoRef.current;
+      if (video && video.readyState < 2) {
+        await new Promise<void>((resolve) => {
+          const finish = () => resolve();
+          video.addEventListener("loadeddata", finish, { once: true });
+          window.setTimeout(finish, 8000);
+        });
+      }
+
+      if (!cancelled) setIsLoaded(true);
+    };
+
+    void waitUntilReady();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded || openedRef.current || hasEndedRef.current) return;
+
+    const id = window.setTimeout(() => {
+      void openInvitation();
+    }, AUTO_OPEN_MS);
+
+    return () => window.clearTimeout(id);
+  }, [isLoaded, openInvitation]);
 
   useEffect(() => {
     if (!isPlaying || hasEnded) return;
@@ -134,6 +194,16 @@ export default function FirstScene({
         }}
         onEnded={markEnded}
       />
+
+      <h1
+        className={`pointer-events-none absolute left-1/2 top-[23%] z-20 w-max max-w-[86%] -translate-x-1/2 border-2 border-heading bg-white px-[3px] py-[3px] text-center transition-opacity duration-500 ${
+          isPlaying || hasEnded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <span className="block border border-heading px-4 py-1.5 font-heading text-[30px] leading-none text-black ">
+          Valima Invitation
+        </span>
+      </h1>
 
       {hasEnded ? (
         <div className="pointer-events-none absolute left-1/2 top-[39%] z-30 w-[34%] -translate-x-1/2 -translate-y-1/2 transform-gpu">

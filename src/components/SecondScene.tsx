@@ -22,45 +22,45 @@ const BLOCKS: Block[] = [
     kind: "heading",
     text: "Mr. & Mrs. Ibn-e-Ali",
     as: "h2",
-    className: `mt-6 text-[26px] ${HEADING_CLASS}`,
+    className: `mt-2 text-[36px] ${HEADING_CLASS}`,
   },
   {
     kind: "body",
     text: "Request the honour of your presence\n& blessing at the",
-    className: `mt-5 ${BODY_CLASS} tracking-[0.18em]`,
+    className: `mt-2 ${BODY_CLASS} tracking-[0.18em]`,
   },
   {
     kind: "heading",
     text: "Valima Reception",
     as: "h3",
-    className: `mt-5 text-[26px] ${HEADING_CLASS}`,
+    className: `mt-2 text-[26px] ${HEADING_CLASS}`,
   },
   {
     kind: "body",
     text: "Of their beloved son",
-    className: `mt-5 ${BODY_CLASS}`,
+    className: `mt-2 ${BODY_CLASS}`,
   },
   {
     kind: "heading",
     text: "Safdar Ali Khan",
     as: "h3",
-    className: `mt-4 text-[34px] ${HEADING_CLASS}`,
+    className: `mt-2 text-[36px] ${HEADING_CLASS}`,
   },
   {
     kind: "body",
     text: "With",
-    className: `mt-5 ${BODY_CLASS} tracking-[0.28em]`,
+    className: `mt-2 ${BODY_CLASS} tracking-[0.28em]`,
   },
   {
     kind: "heading",
     text: "Daughter of",
     as: "h3",
-    className: `mt-4 text-[28px] ${HEADING_CLASS}`,
+    className: `mt-2 text-[36px] ${HEADING_CLASS}`,
   },
   {
     kind: "body",
     text: "Sarwar Khan",
-    className: "mt-4 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-black",
+    className: "mt-2 font-sans text-[14px] font-semibold uppercase tracking-[0.22em] text-black",
   },
 ];
 
@@ -159,7 +159,7 @@ function AnimatedHeading({
   );
 }
 
-export default function SecondScene() {
+export default function SecondScene({ onComplete }: { onComplete: () => void }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
   const [step, setStep] = useState(0);
@@ -167,6 +167,9 @@ export default function SecondScene() {
   const advance = useCallback(() => {
     setStep((current) => Math.min(current + 1, BLOCKS.length));
   }, []);
+
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
     const node = sectionRef.current;
@@ -185,6 +188,16 @@ export default function SecondScene() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (step < BLOCKS.length) return;
+
+    const id = window.setTimeout(() => {
+      onCompleteRef.current();
+    }, 1600);
+
+    return () => window.clearTimeout(id);
+  }, [step]);
+
   return (
     <section
       ref={sectionRef}
@@ -197,7 +210,7 @@ export default function SecondScene() {
         className="pointer-events-none absolute inset-0 h-full w-full object-cover"
       />
 
-      <div className="relative z-10 flex max-w-[340px] flex-col items-center text-center">
+      <div className="relative z-10 flex max-w-[360px] flex-col items-center text-center">
         {BLOCKS.map((block, index) => {
           const active = inView && step === index;
           const complete = step > index;

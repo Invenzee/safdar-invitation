@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { montserrat, tempting } from "./fonts";
+import { montserrat, sunyshine } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${montserrat.variable} ${tempting.variable} h-full antialiased`}
+      className={`${montserrat.variable} ${sunyshine.variable} h-full antialiased`}
     >
       <body className="h-full overflow-hidden bg-black font-sans">{children}</body>
     </html>
